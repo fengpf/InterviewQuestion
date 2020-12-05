@@ -14,9 +14,25 @@ struct Node* ReverseLinkedList(struct Node* node);
 
 void DestoryLinkedList(struct Node* node);
 
-int main() {
-    int len = 10;
+int test(int len);
 
+int main() {
+    printf("zero node reverse\n");
+    test(0);
+
+    printf("one node reverse\n");
+    test(1);
+
+    printf("five nodes reverse\n");
+    test(5);
+
+    printf("ten nodes reverse\n");
+    test(10);
+
+    return 0;
+}
+
+int test(int len) {
     int *p,i;
     int a[len] ;
     for(i=0; i<len; i++)
@@ -37,6 +53,7 @@ int main() {
     head = NULL;
     printf("head(%p)\n", head);
     printf("reverseNode(%p)\n", reverseNode);
+
     return 0;
 }
  
