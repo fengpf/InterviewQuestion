@@ -12,9 +12,10 @@ struct Node* CreateLinkedList(int* array, int length);
 struct Node* ReverseLinkedList(struct Node* node);
 void DestoryLinkedList(struct Node** node);
 
-//add  Unit tests
-void testCreateLinkedList(int len);
+//add Unit tests
+struct Node* testCreateLinkedList(int len);
 void testReverseLinkedList(int len);
+void testDestoryLinkedList(struct Node* node);
 void testByNum(int len);
 void testFull(int len);
 
@@ -28,16 +29,20 @@ int main() {
 
 void testByNum(int len) {
     printf("testCreateLinkedList\n");
-    testCreateLinkedList(len);
+    struct Node* head;
+    head = testCreateLinkedList(len);
 
     printf("testReverseLinkedList\n");
     testReverseLinkedList(len);
+
+    printf("testDestoryLinkedList\n");
+    testDestoryLinkedList(head);
 
     printf("testFull\n");
     testFull(len);
 }
 
-void testCreateLinkedList(int len) {
+struct Node* testCreateLinkedList(int len) {
     int *p,i;
     int a[len] ;
     for(i=0; i<len; i++)
@@ -51,11 +56,14 @@ void testCreateLinkedList(int len) {
 
     int j;
     int res;
+
     for(q=head; q!=NULL; q=q->next) {
         printf("a[%d]:%d, q->val:%d\n", j, a[j], q->val);
         assert(a[j] == q->val);//add Corner cases check
         j++;
     }
+
+    return head;
 }
 
 void testReverseLinkedList(int len) {
@@ -78,6 +86,11 @@ void testReverseLinkedList(int len) {
         assert(a[j] == q->val);//add Corner cases check
         j--;
     }
+}
+
+void testDestoryLinkedList(struct Node* node) {
+    DestoryLinkedList(&node);
+    assert(node==NULL);
 }
 
 void testFull(int len) {
