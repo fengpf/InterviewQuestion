@@ -1,6 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h> 
-
+#include <assert.h>
 //  Reverse a singly linked-list, you need to implement functions as these followings
 
 struct Node{
@@ -9,30 +9,78 @@ struct Node{
 };
 
 struct Node* CreateLinkedList(int* array, int length);
-
 struct Node* ReverseLinkedList(struct Node* node);
+void DestoryLinkedList(struct Node** node);
 
-void DestoryLinkedList(struct Node* node);
-
-int test(int len);
+//add  Unit tests
+void testCreateLinkedList(int len);
+void testReverseLinkedList(int len);
+void testByNum(int len);
+void testFull(int len);
 
 int main() {
-    printf("zero node reverse\n");
-    test(0);
-
-    printf("one node reverse\n");
-    test(1);
-
-    printf("five nodes reverse\n");
-    test(5);
-
-    printf("ten nodes reverse\n");
-    test(10);
-
+    testByNum(1);
+    testByNum(10);
+    testByNum(50);
+    testByNum(100);
     return 0;
 }
 
-int test(int len) {
+void testByNum(int len) {
+    printf("testCreateLinkedList\n");
+    testCreateLinkedList(len);
+
+    printf("testReverseLinkedList\n");
+    testReverseLinkedList(len);
+
+    printf("testFull\n");
+    testFull(len);
+}
+
+void testCreateLinkedList(int len) {
+    int *p,i;
+    int a[len] ;
+    for(i=0; i<len; i++)
+    {
+        a[i]=i;
+    }
+    p = a;
+  
+    struct Node* head, *q;
+    head = CreateLinkedList(p, len);
+
+    int j;
+    int res;
+    for(q=head; q!=NULL; q=q->next) {
+        printf("a[%d]:%d, q->val:%d\n", j, a[j], q->val);
+        assert(a[j] == q->val);//add Corner cases check
+        j++;
+    }
+}
+
+void testReverseLinkedList(int len) {
+    int *p, i;
+    int a[len] ;
+    for(i=0; i<len; i++)
+    {
+        a[i]=i;
+    }
+    p = a;
+  
+    struct Node* head, *reverseNode, *q;
+    head = CreateLinkedList(p, len);
+    reverseNode = ReverseLinkedList(head);
+
+    int j=len-1;
+    int res;
+    for(q=reverseNode; q!=NULL; q=q->next) {
+        printf("a[%d]:%d, q->val:%d\n", j, a[j], q->val);
+        assert(a[j] == q->val);//add Corner cases check
+        j--;
+    }
+}
+
+void testFull(int len) {
     int *p,i;
     int a[len] ;
     for(i=0; i<len; i++)
@@ -46,18 +94,12 @@ int test(int len) {
 
     reverseNode = ReverseLinkedList(head);//翻转链表
 
-    //销毁链表
-    DestoryLinkedList(head);
-    DestoryLinkedList(reverseNode);
+    DestoryLinkedList(&head);//销毁链表
     
-    head = NULL;
     printf("head(%p)\n", head);
-    printf("reverseNode(%p)\n", reverseNode);
-
-    return 0;
 }
  
- struct Node* CreateLinkedList(int* array, int length){
+ struct Node* CreateLinkedList(int* array, int length) {
      struct Node* head, *temp;
      head = (struct Node*) malloc(sizeof(struct Node*));
      if(head == NULL)
@@ -113,22 +155,22 @@ struct Node* ReverseLinkedList(struct Node* node) {
         cur = next;
     }
 
-    while (pre!=NULL) {
-        printf("after reverse node(%d)\n", pre->val);
-        pre = pre->next;
-    }
+    // while (pre!=NULL) {
+    //     printf("after reverse node(%d)\n", pre->val);
+    //     pre = pre->next;
+    // }
 
     return pre;
 }
 
-void DestoryLinkedList(struct Node* node) {
-    struct Node* p, *q;
-    p = node;
-    while (p)
+void DestoryLinkedList(struct Node** node) {
+   if(!*node) return;
+
+    struct Node* temp;
+    while (*node)
     {
-        q = p->next;
-        free(p);
-        p = q;
+        temp = *node;
+        *node = temp->next;
+        free(temp);
     }
-    node = NULL;
 }
